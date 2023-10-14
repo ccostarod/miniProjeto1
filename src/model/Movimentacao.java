@@ -2,6 +2,7 @@ package model;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -65,12 +66,16 @@ public class Movimentacao {
     }
     public String toStringEmprestado() {
         LocalDate dataDevolucao = data.plus(7, ChronoUnit.DAYS);
-
-        return "Emprestado - Usuario: " + usuario + "\nExemplar: " + exemplar + ", Devolução até " + dataDevolucao + ", Dias restantes: ";
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return "Emprestado - Usuario: " + usuario + "\nExemplar: " + exemplar + ", Devolução até " + dataDevolucao.format(formato);
     }
 
     public String toStringDevolvido() {
         return "Devolvido - Usuario: " + usuario + "\nExemplar: " + exemplar + ", data de devolução: " + data + ", status de leitura: " + getStatusLeitura() + "\n";
+    }
+
+    public String toStringRanking(){
+        return "Usuario: " + usuario + ", quantidade de livros lidos: " + usuario.contadorDeLeituras;
     }
 
 

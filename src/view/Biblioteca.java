@@ -5,8 +5,6 @@ import model.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -291,6 +289,16 @@ public class Biblioteca {
                     biblioteca.imprimirRegistros();
                     break;
                 case 8:
+                    int i = 0;
+                    if (biblioteca.rankingCriancas() != null){
+                        for (Movimentacao x : biblioteca.rankingCriancas()) {
+                            System.out.println(i + ". " + x.toStringRanking());
+                            i++;
+                        }
+                    }
+                    else{
+                        System.out.println("Nao há registros de crianças no Ranking!");
+                    }
                     break;
                 case 9:
                     System.exit(0);

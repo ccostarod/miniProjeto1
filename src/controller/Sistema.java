@@ -6,9 +6,7 @@ import model.Usuario;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Sistema {
@@ -128,7 +126,7 @@ public class Sistema {
     public boolean devolucaoExemplar(String cpf, boolean statusLeitura, LocalDate dataDeDevolucao){
         if (!emprestimos.isEmpty()){
             for (Movimentacao emprestimo : emprestimos){
-                if (emprestimo.getUsuario().getCpf().equals(cpf) && emprestimo.getUsuario().isPossuiEmprestimo()){
+                if (emprestimo.getUsuario().getCpf().equals(cpf) && emprestimo.getUsuario().isPossuiEmprestimo() && (dataDeDevolucao.isAfter(emprestimo.getData()) || dataDeDevolucao.isEqual(emprestimo.getData()))){
                     emprestimo.getExemplar().setDisponivel(true);
                     emprestimo.getUsuario().setPossuiEmprestimo(false);
                     Movimentacao devolucao;
@@ -174,17 +172,18 @@ public class Sistema {
     }
 
 
-    public Usuario rankingCriancas(){ //TODO FAZER RANKING
-        Movimentacao primeiro = devolucoes.get(0);
-        for (Movimentacao devolucao : devolucoes){
-            if (devolucao.getUsuario().isIndicadorCrianca()){
-                if (devolucao.getUsuario().getContadorDeLeituras() > primeiro.getUsuario().getContadorDeLeituras()){
-                    primeiro = devolucao;
-                }
-            }
+    public List<Movimentacao> rankingCriancas() {
+        Set<String> usuariosFiltrados = new HashSet<>();
+        List<Movimentacao> devolucoesCriancas = devolucoes.stream().filter(x -> x.getUsuario().isIndicadorCrianca() && usuariosFiltrados.add(x.getUsuario().getCpf()))
+                .collect(Collectors.toList());
+
+        Collections.sort(devolucoesCriancas, (devolucao1, devolucao2) -> Integer.compare(
+                devolucao2.getUsuario().getContadorDeLeituras(), devolucao1.getUsuario().getContadorDeLeituras()));
+
+        if (!devolucoesCriancas.isEmpty()) {
+            return devolucoesCriancas;
+        } else {
+            return null;
         }
-        return primeiro.getUsuario();
     }
-
-
 }
