@@ -1,8 +1,9 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
-public class Usuario {
+public class Usuario implements Comparable<Usuario> {
     String nome;
     String cpf;
     LocalDate dataDeNascimento;
@@ -76,5 +77,14 @@ public class Usuario {
     @Override
     public String toString() {
         return nome + ", " + cpf;
+    }
+
+    public String toStringRanking(){
+        return nome + ", " + cpf + ", quantidade de livros lidos: " + contadorDeLeituras;
+    }
+
+    @Override
+    public int compareTo(Usuario o) {
+        return Integer.compare(o.contadorDeLeituras, this.contadorDeLeituras);
     }
 }

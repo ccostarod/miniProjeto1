@@ -62,13 +62,14 @@ public class Sistema {
     public boolean procurarCPF(String cpf){
         if (!usuarios.isEmpty()){
             for (Usuario usuario : usuarios) {
-                if (usuario.getCpf().equals(cpf)) {
+                if (usuario.getCpf().equalsIgnoreCase(cpf)) {
                     return true;
                 }
             }
         }
         return false;
     }
+
     public boolean alterarUsuario(String cpf, int key, String update) {
         if (!usuarios.isEmpty()){
             for (Usuario usuario : usuarios) {
@@ -140,17 +141,8 @@ public class Sistema {
         return false;
     }
 
-    public void imprimirAcervo(){
-        int i = 1;
-        if (!exemplares.isEmpty()){
-            for (Exemplar exemplar : exemplares){
-                System.out.println(i + ". " + exemplar);
-                i++;
-            }
-            System.out.println();
-        }
 
-    }
+
 
     public void imprimirRegistros(){
         if (!emprestimos.isEmpty()){
@@ -171,19 +163,10 @@ public class Sistema {
         }
     }
 
-
-    public List<Movimentacao> rankingCriancas() {
-        Set<String> usuariosFiltrados = new HashSet<>();
-        List<Movimentacao> devolucoesCriancas = devolucoes.stream().filter(x -> x.getUsuario().isIndicadorCrianca() && usuariosFiltrados.add(x.getUsuario().getCpf()))
-                .collect(Collectors.toList());
-
-        Collections.sort(devolucoesCriancas, (devolucao1, devolucao2) -> Integer.compare(
-                devolucao2.getUsuario().getContadorDeLeituras(), devolucao1.getUsuario().getContadorDeLeituras()));
-
-        if (!devolucoesCriancas.isEmpty()) {
-            return devolucoesCriancas;
-        } else {
-            return null;
-        }
+    public List<Usuario> rankingCriancas() {
+        List<Usuario> rankingCriancas = usuarios.stream().filter(x -> x.isIndicadorCrianca() && x.getContadorDeLeituras() > 0).collect(Collectors.toList());
+        Collections.sort(rankingCriancas);
+        return rankingCriancas;
     }
+
 }

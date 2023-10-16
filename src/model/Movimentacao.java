@@ -30,7 +30,7 @@ public class Movimentacao {
         return data;
     }
 
-        public void setData(LocalDate data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
@@ -73,10 +73,5 @@ public class Movimentacao {
     public String toStringDevolvido() {
         return "Devolvido - Usuario: " + usuario + "\nExemplar: " + exemplar + ", data de devolução: " + data + ", status de leitura: " + getStatusLeitura() + "\n";
     }
-
-    public String toStringRanking(){
-        return "Usuario: " + usuario + ", quantidade de livros lidos: " + usuario.contadorDeLeituras;
-    }
-
 
 }

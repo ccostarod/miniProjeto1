@@ -291,7 +291,7 @@ public class Biblioteca {
                 case 8:
                     int i = 0;
                     if (biblioteca.rankingCriancas() != null){
-                        for (Movimentacao x : biblioteca.rankingCriancas()) {
+                        for (Usuario x : biblioteca.rankingCriancas()) {
                             System.out.println(i + ". " + x.toStringRanking());
                             i++;
                         }
